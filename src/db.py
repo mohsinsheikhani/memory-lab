@@ -32,6 +32,9 @@ create table if not exists memories (
     created_at   timestamptz not null default now()
 );
 
+-- When a fact is replaced, the old row points to the new one.
+alter table memories add column if not exists replaced_by uuid references memories(id);
+
 create index if not exists memories_owner_idx on memories (tenant_id, user_id, subject, predicate);
 create index if not exists memories_embedding_idx on memories using hnsw (embedding vector_cosine_ops);
 
@@ -69,6 +72,7 @@ def save_fact(
     source: str,
     valid_from: date,
     derived_from: str | None = None,
+    embedding: list[float] | None = None,
 ) -> str:
     row = conn.execute(
         """
@@ -77,7 +81,7 @@ def save_fact(
         returning id
         """,
         (tenant_id, user_id, fact.subject, fact.predicate, fact.value, fact.text,
-         source, valid_from, derived_from, embed(fact.text)),
+         source, valid_from, derived_from, embedding or embed(fact.text)),
     ).fetchone()
     return str(row[0])
 
