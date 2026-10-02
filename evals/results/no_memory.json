@@ -1,0 +1,509 @@
+{
+  "system": "no_memory",
+  "run_id": "no_memory-346d43",
+  "accuracy": {
+    "recall": 0.0,
+    "update": 0.0,
+    "time": 0.0,
+    "across_chats": 0.0,
+    "abstain": 1.0,
+    "old_premise": 0.0,
+    "overall": 0.16666666666666666
+  },
+  "avg_tokens": 114.07142857142857,
+  "p95_latency_s": 1.7135500000000001,
+  "cases": [
+    {
+      "id": "recall-01",
+      "type": "recall",
+      "question": "Do I have any food allergies?",
+      "answer": "I don't have any information about your food allergies. If you have specific allergies, please let me know so I can assist you better.",
+      "passed": false,
+      "fails": [
+        "missing 'nut'"
+      ],
+      "tokens": 117,
+      "latency_s": 1.686
+    },
+    {
+      "id": "recall-02",
+      "type": "recall",
+      "question": "What's my cat's name?",
+      "answer": "I'm sorry, but I don't have any information about your cat's name.",
+      "passed": false,
+      "fails": [
+        "missing 'Biscuit'"
+      ],
+      "tokens": 104,
+      "latency_s": 0.712
+    },
+    {
+      "id": "recall-03",
+      "type": "recall",
+      "question": "Which cheese did I say I love?",
+      "answer": "I'm sorry, but I don't have any information about your favorite cheese.",
+      "passed": false,
+      "fails": [
+        "missing 'halloumi'"
+      ],
+      "tokens": 105,
+      "latency_s": 0.981
+    },
+    {
+      "id": "recall-04",
+      "type": "recall",
+      "question": "What kind of milk do I prefer?",
+      "answer": "I'm sorry, but I don't have any information about your milk preferences.",
+      "passed": false,
+      "fails": [
+        "missing 'oat'"
+      ],
+      "tokens": 105,
+      "latency_s": 0.829
+    },
+    {
+      "id": "recall-05",
+      "type": "recall",
+      "question": "What time should my deliveries usually come?",
+      "answer": "I don't have specific information about your delivery times, Ali. Typically, delivery times can vary based on your location and the availability of delivery slots. You can check the app for your scheduled delivery time.",
+      "passed": false,
+      "fails": [
+        "missing '6'"
+      ],
+      "tokens": 131,
+      "latency_s": 1.527
+    },
+    {
+      "id": "recall-06",
+      "type": "recall",
+      "question": "Which area of Dubai do I live in?",
+      "answer": "I'm sorry, but I don't have information about your area in Dubai.",
+      "passed": false,
+      "fails": [
+        "missing 'Marina'"
+      ],
+      "tokens": 106,
+      "latency_s": 1.715
+    },
+    {
+      "id": "recall-07",
+      "type": "recall",
+      "question": "Am I vegetarian?",
+      "answer": "I don't have any information about your dietary preferences, so I can't say if you are vegetarian or not.",
+      "passed": false,
+      "fails": [
+        "missing 'yes'"
+      ],
+      "tokens": 108,
+      "latency_s": 0.686
+    },
+    {
+      "id": "update-01",
+      "type": "update",
+      "question": "Which city should today's order go to?",
+      "answer": "I'm sorry, but I don't have information about your city. Please provide the city for your order.",
+      "passed": false,
+      "fails": [
+        "missing 'Dubai'"
+      ],
+      "tokens": 111,
+      "latency_s": 1.203
+    },
+    {
+      "id": "update-02",
+      "type": "update",
+      "question": "What's my diet?",
+      "answer": "I'm sorry, but I don't have any information about your diet.",
+      "passed": false,
+      "fails": [
+        "missing 'vegan'"
+      ],
+      "tokens": 100,
+      "latency_s": 0.953
+    },
+    {
+      "id": "update-03",
+      "type": "update",
+      "question": "Do I still have a weekly delivery?",
+      "answer": "I don't have access to your account details, so I can't check if you still have a weekly delivery. Please check your account in the app or contact customer support for assistance.",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not explicitly state that the weekly delivery was cancelled or that Ali does not have one now. It only suggests checking the account or contacting support for more information."
+      ],
+      "tokens": 126,
+      "latency_s": 1.166
+    },
+    {
+      "id": "update-04",
+      "type": "update",
+      "question": "Which city do I live in?",
+      "answer": "I'm sorry, but I don't have information about which city you live in.",
+      "passed": false,
+      "fails": [
+        "missing 'Dubai'"
+      ],
+      "tokens": 105,
+      "latency_s": 1.318
+    },
+    {
+      "id": "update-05",
+      "type": "update",
+      "question": "Can I eat halloumi?",
+      "answer": "I don't have any information about your dietary preferences or restrictions, so I can't say for sure. Halloumi is a type of cheese, so if you enjoy cheese and have no dietary issues with it, you can eat it.",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not mention that halloumi is dairy or warn that Ali is vegan now. It fails to address the rule by not providing a warning about halloumi being a dairy product."
+      ],
+      "tokens": 136,
+      "latency_s": 1.159
+    },
+    {
+      "id": "update-06",
+      "type": "update",
+      "question": "Am I vegetarian?",
+      "answer": "I don't have any information about your dietary preferences, so I can't say if you are vegetarian or not.",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not mention that Ali is vegan now, which is required by the rule."
+      ],
+      "tokens": 108,
+      "latency_s": 1.076
+    },
+    {
+      "id": "update-07",
+      "type": "update",
+      "question": "Which day does my weekly delivery come?",
+      "answer": "I'm sorry, but I don't have information about your weekly delivery schedule. You may want to check your account in the app or contact customer support for details.",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not mention that the weekly delivery was cancelled. It only suggests checking the account or contacting support for details."
+      ],
+      "tokens": 122,
+      "latency_s": 1.0
+    },
+    {
+      "id": "time-01",
+      "type": "time",
+      "question": "Where did I live in January?",
+      "answer": "I'm sorry, but I don't have any information about where you lived in January.",
+      "passed": false,
+      "fails": [
+        "missing 'Lahore'"
+      ],
+      "tokens": 106,
+      "latency_s": 0.819
+    },
+    {
+      "id": "time-02",
+      "type": "time",
+      "question": "What was my diet in February?",
+      "answer": "I'm sorry, but I don't have any information about your diet in February.",
+      "passed": false,
+      "fails": [
+        "missing 'vegetarian'"
+      ],
+      "tokens": 105,
+      "latency_s": 0.819
+    },
+    {
+      "id": "time-03",
+      "type": "time",
+      "question": "In which month did I move to Dubai?",
+      "answer": "I'm sorry, but I don't have any information about when you moved to Dubai.",
+      "passed": false,
+      "fails": [
+        "missing 'March'"
+      ],
+      "tokens": 108,
+      "latency_s": 0.747
+    },
+    {
+      "id": "time-04",
+      "type": "time",
+      "question": "Did I have a weekly delivery in March?",
+      "answer": "I don't have information about your past deliveries, including whether you had a weekly delivery in March.",
+      "passed": false,
+      "fails": [
+        "missing 'yes'"
+      ],
+      "tokens": 111,
+      "latency_s": 0.892
+    },
+    {
+      "id": "time-05",
+      "type": "time",
+      "question": "In which month did I tell you about my nut allergy?",
+      "answer": "I'm sorry, but I don't have any information about your nut allergy or any past conversations.",
+      "passed": false,
+      "fails": [
+        "missing 'February'"
+      ],
+      "tokens": 113,
+      "latency_s": 0.913
+    },
+    {
+      "id": "time-06",
+      "type": "time",
+      "question": "In which month did I go vegan?",
+      "answer": "I'm sorry, but I don't have any information about when you went vegan.",
+      "passed": false,
+      "fails": [
+        "missing 'April'"
+      ],
+      "tokens": 106,
+      "latency_s": 1.433
+    },
+    {
+      "id": "time-07",
+      "type": "time",
+      "question": "Where did I live before Dubai?",
+      "answer": "I'm sorry, but I don't have any information about where you lived before Dubai.",
+      "passed": false,
+      "fails": [
+        "missing 'Lahore'"
+      ],
+      "tokens": 106,
+      "latency_s": 1.336
+    },
+    {
+      "id": "across-01",
+      "type": "across_chats",
+      "question": "Suggest a snack for me.",
+      "answer": "I don't have any information about your preferences, Ali. However, a popular snack option is mixed nuts or a fruit salad. Let me know if you have any specific preferences!",
+      "passed": false,
+      "fails": [
+        "judge: The suggestion includes mixed nuts, which is not nut-free. The answer does not meet the rule of being both vegan and nut-free."
+      ],
+      "tokens": 124,
+      "latency_s": 1.714
+    },
+    {
+      "id": "across-02",
+      "type": "across_chats",
+      "question": "What should I put in my coffee?",
+      "answer": "I don't have any information about your preferences, so I can't suggest specific ingredients for your coffee. Common options include milk, cream, sugar, or flavored syrups.",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not suggest oat milk or another vegan, nut-free option. It also mentions milk and cream, which are dairy products, thus failing to meet the rule."
+      ],
+      "tokens": 124,
+      "latency_s": 1.711
+    },
+    {
+      "id": "across-03",
+      "type": "across_chats",
+      "question": "Plan a main dish for my dinner party.",
+      "answer": "I'm sorry, but I don't have any information about your preferences or dietary restrictions. Could you provide more details about what you like?",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not provide a vegan and nut-free main dish suggestion, which is required by the rule. Instead, it asks for more information without addressing the rule directly."
+      ],
+      "tokens": 118,
+      "latency_s": 0.93
+    },
+    {
+      "id": "across-04",
+      "type": "across_chats",
+      "question": "Where and at what time should you deliver my order?",
+      "answer": "I don't have information about your order details, including the delivery location and time. Please provide me with that information, and I'll be happy to assist you!",
+      "passed": false,
+      "fails": [
+        "missing 'Dubai'",
+        "missing '6'"
+      ],
+      "tokens": 125,
+      "latency_s": 0.901
+    },
+    {
+      "id": "across-05",
+      "type": "across_chats",
+      "question": "Recommend a cheese for me.",
+      "answer": "I don't have any information about your cheese preferences, but a popular choice is aged cheddar for its rich flavor. Would you like more options?",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not recommend a vegan cheese that is nut-free, nor does it warn about both. Instead, it suggests aged cheddar, which is not vegan."
+      ],
+      "tokens": 117,
+      "latency_s": 1.127
+    },
+    {
+      "id": "across-06",
+      "type": "across_chats",
+      "question": "Add almond butter to my cart please.",
+      "answer": "I can't add items to your cart directly. Please open the FreshCart app and search for almond butter to add it to your cart.",
+      "passed": false,
+      "fails": [
+        "judge: The response does not warn Ali about his nut allergy before adding almond butter to the cart."
+      ],
+      "tokens": 118,
+      "latency_s": 1.482
+    },
+    {
+      "id": "across-07",
+      "type": "across_chats",
+      "question": "Suggest a protein bar.",
+      "answer": "I'm sorry, but I don't have specific information about protein bars. You might want to check the app for popular options or customer reviews.",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not provide a suggestion for a vegan and nut-free protein bar, nor does it clearly warn about the presence of nuts or non-vegan ingredients. It simply redirects the user to check an app, which does not meet the rule."
+      ],
+      "tokens": 115,
+      "latency_s": 0.878
+    },
+    {
+      "id": "abstain-01",
+      "type": "abstain",
+      "question": "What's my dog's name?",
+      "answer": "I'm sorry, but I don't have any information about your dog's name.",
+      "passed": true,
+      "fails": [],
+      "tokens": 102,
+      "latency_s": 0.778
+    },
+    {
+      "id": "abstain-02",
+      "type": "abstain",
+      "question": "What's my phone number?",
+      "answer": "I'm sorry, but I don't have access to your phone number.",
+      "passed": true,
+      "fails": [],
+      "tokens": 101,
+      "latency_s": 0.945
+    },
+    {
+      "id": "abstain-03",
+      "type": "abstain",
+      "question": "When is my birthday?",
+      "answer": "I'm sorry, but I don't have information about your birthday.",
+      "passed": true,
+      "fails": [],
+      "tokens": 100,
+      "latency_s": 1.159
+    },
+    {
+      "id": "abstain-04",
+      "type": "abstain",
+      "question": "What's my card number?",
+      "answer": "I'm sorry, but I don't have access to your card number or any personal information. Please check your account or contact your bank for assistance.",
+      "passed": true,
+      "fails": [],
+      "tokens": 116,
+      "latency_s": 0.947
+    },
+    {
+      "id": "abstain-05",
+      "type": "abstain",
+      "question": "Which gym do I go to?",
+      "answer": "I'm sorry, but I don't have any information about which gym you go to.",
+      "passed": true,
+      "fails": [],
+      "tokens": 106,
+      "latency_s": 0.832
+    },
+    {
+      "id": "abstain-06",
+      "type": "abstain",
+      "question": "What's my wife's name?",
+      "answer": "I'm sorry, but I don't have any information about your wife's name.",
+      "passed": true,
+      "fails": [],
+      "tokens": 102,
+      "latency_s": 0.87
+    },
+    {
+      "id": "abstain-07",
+      "type": "abstain",
+      "question": "How many kids do I have?",
+      "answer": "I'm sorry, but I don't have any information about how many kids you have.",
+      "passed": true,
+      "fails": [],
+      "tokens": 106,
+      "latency_s": 0.876
+    },
+    {
+      "id": "premise-01",
+      "type": "old_premise",
+      "question": "Send today's order to my Lahore address.",
+      "answer": "I don't have your Lahore address on file. Please provide it so I can assist you with your order.",
+      "passed": false,
+      "fails": [
+        "missing 'Dubai'",
+        "judge: The answer does not mention Ali's move to Dubai or check which address to use. It only asks for the Lahore address without addressing the rule."
+      ],
+      "tokens": 112,
+      "latency_s": 0.945
+    },
+    {
+      "id": "premise-02",
+      "type": "old_premise",
+      "question": "Add some regular cheese to my cart, it's fine since I'm vegetarian.",
+      "answer": "I can't add items to your cart directly. Please log into your FreshCart account and search for regular cheese to add it yourself. If you need help with anything else, let me know!",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not address the fact that Ali mentioned he is vegan now. It should have pointed out that regular cheese may not be suitable for a vegan diet."
+      ],
+      "tokens": 135,
+      "latency_s": 1.126
+    },
+    {
+      "id": "premise-03",
+      "type": "old_premise",
+      "question": "Add milk to my weekly Saturday delivery.",
+      "answer": "I don't have access to your previous orders or details. Please let me know if you need assistance with anything else!",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not mention that the weekly delivery was cancelled, which is the rule that needs to be addressed."
+      ],
+      "tokens": 114,
+      "latency_s": 0.911
+    },
+    {
+      "id": "premise-04",
+      "type": "old_premise",
+      "question": "Since I'm in Lahore, which store is closest to me?",
+      "answer": "I'm sorry, but I don't have information about specific store locations in Lahore. You can check the FreshCart app for the nearest store to your location.",
+      "passed": false,
+      "fails": [
+        "missing 'Dubai'"
+      ],
+      "tokens": 125,
+      "latency_s": 1.095
+    },
+    {
+      "id": "premise-05",
+      "type": "old_premise",
+      "question": "Add cow's milk yoghurt, that's fine for a vegetarian like me.",
+      "answer": "I can help you with that! However, I don't have information about your specific grocery preferences or past orders. Please let me know if you need assistance with anything else!",
+      "passed": false,
+      "fails": [
+        "judge: The response does not address the fact that Ali mentioned he is vegan now, which means cow's milk yoghurt would not be suitable for him."
+      ],
+      "tokens": 131,
+      "latency_s": 0.913
+    },
+    {
+      "id": "premise-06",
+      "type": "old_premise",
+      "question": "Deliver after 8pm like I always ask.",
+      "answer": "I don't have any information about your previous requests, but I can help you schedule a delivery after 8 PM. Would you like to proceed with that?",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not address Ali's usual preference being after 6pm or check which time he wants. It only offers to schedule a delivery after 8 PM without verifying if this is Ali's usual preference or a one-off request."
+      ],
+      "tokens": 124,
+      "latency_s": 1.024
+    },
+    {
+      "id": "premise-07",
+      "type": "old_premise",
+      "question": "As a vegetarian living in Lahore, what do you recommend for me?",
+      "answer": "I don't have specific information about your preferences, but as a vegetarian, you might enjoy fresh fruits, vegetables, legumes, and plant-based proteins. You can also explore local vegetarian dishes available in Lahore.",
+      "passed": false,
+      "fails": [
+        "judge: The response does not mention Ali being vegan or living in Dubai."
+      ],
+      "tokens": 137,
+      "latency_s": 1.022
+    }
+  ]
+}
