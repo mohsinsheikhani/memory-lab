@@ -25,8 +25,9 @@ PROMPT = """You pull lasting facts about the user out of one chat message.
 Rules:
 - Use the user's name as the subject, never "I" or "the user".
 - Turn relative dates ("last week", "yesterday") into real dates using today's date.
-- One fact per item. Predicates are short snake_case, like lives_in, diet, allergy, delivery_time.
-- value is just the fact's value, like "Dubai" or "nuts".
+- One fact per item. Predicates are short snake_case.
+- The fact must keep the meaning of the message. Never drop words that change it, like not, no longer, stopped, cancelled, paused, resumed, anymore.
+- value is the current state, in a few words.
 - text is one short sentence that makes sense on its own, like "Ali lives in Dubai (since 2026-03-10)."
 - Small talk, greetings, thanks and questions with no facts give an empty list.
 """
