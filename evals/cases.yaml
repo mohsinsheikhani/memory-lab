@@ -1,0 +1,230 @@
+# Eval cases for Ali's memory.
+# history: which conversations the agent has seen (default: all of them)
+# asked_on: the date the question is asked (default: 2026-06-15)
+# Grading: must_contain (all must appear), must_not_contain (none may appear), judge (LLM checks the rule).
+# Use code checks when you can, a judge only when you must.
+
+# ---------- recall: can it find one fact? ----------
+- id: recall-01
+  type: recall
+  question: "Do I have any food allergies?"
+  must_contain: ["nut"]
+
+- id: recall-02
+  type: recall
+  question: "What's my cat's name?"
+  must_contain: ["Biscuit"]
+
+- id: recall-03
+  type: recall
+  question: "Which cheese did I say I love?"
+  must_contain: ["halloumi"]
+
+- id: recall-04
+  type: recall
+  question: "What kind of milk do I prefer?"
+  must_contain: ["oat"]
+
+- id: recall-05
+  type: recall
+  question: "What time should my deliveries usually come?"
+  must_contain: ["6"]
+  must_not_contain: ["8pm", "8 pm"]
+
+- id: recall-06
+  type: recall
+  question: "Which area of Dubai do I live in?"
+  must_contain: ["Marina"]
+
+- id: recall-07
+  type: recall
+  history: [jan-01, jan-02, jan-03]
+  asked_on: 2026-01-30
+  question: "Am I vegetarian?"
+  must_contain: ["yes"]
+
+# ---------- update: does it use the newest fact? ----------
+- id: update-01
+  type: update
+  question: "Which city should today's order go to?"
+  must_contain: ["Dubai"]
+  must_not_contain: ["Lahore"]
+
+- id: update-02
+  type: update
+  question: "What's my diet?"
+  must_contain: ["vegan"]
+
+- id: update-03
+  type: update
+  question: "Do I still have a weekly delivery?"
+  judge: "Says the weekly delivery was cancelled, or that Ali does not have one now."
+
+- id: update-04
+  type: update
+  question: "Which city do I live in?"
+  must_contain: ["Dubai"]
+
+- id: update-05
+  type: update
+  question: "Can I eat halloumi?"
+  judge: "Says no, or warns that halloumi is dairy and Ali is vegan now."
+
+- id: update-06
+  type: update
+  history: [jan-01, apr-02]
+  asked_on: 2026-04-20
+  question: "Am I vegetarian?"
+  judge: "Says Ali is vegan now (vegan, not just vegetarian)."
+
+- id: update-07
+  type: update
+  question: "Which day does my weekly delivery come?"
+  judge: "Says the weekly delivery was cancelled, instead of just answering Saturday."
+
+# ---------- time: can it reason about when? ----------
+- id: time-01
+  type: time
+  question: "Where did I live in January?"
+  must_contain: ["Lahore"]
+
+- id: time-02
+  type: time
+  question: "What was my diet in February?"
+  must_contain: ["vegetarian"]
+
+- id: time-03
+  type: time
+  question: "In which month did I move to Dubai?"
+  must_contain: ["March"]
+
+- id: time-04
+  type: time
+  question: "Did I have a weekly delivery in March?"
+  must_contain: ["yes"]
+
+- id: time-05
+  type: time
+  question: "In which month did I tell you about my nut allergy?"
+  must_contain: ["February"]
+
+- id: time-06
+  type: time
+  question: "In which month did I go vegan?"
+  must_contain: ["April"]
+
+- id: time-07
+  type: time
+  question: "Where did I live before Dubai?"
+  must_contain: ["Lahore"]
+
+# ---------- across_chats: can it combine facts from different chats? ----------
+- id: across-01
+  type: across_chats
+  question: "Suggest a snack for me."
+  judge: "The suggestion is vegan AND nut-free."
+
+- id: across-02
+  type: across_chats
+  question: "What should I put in my coffee?"
+  judge: "Suggests oat milk or another vegan, nut-free option. Does not suggest almond milk or dairy."
+
+- id: across-03
+  type: across_chats
+  question: "Plan a main dish for my dinner party."
+  judge: "The dish is vegan AND nut-free."
+
+- id: across-04
+  type: across_chats
+  question: "Where and at what time should you deliver my order?"
+  must_contain: ["Dubai", "6"]
+
+- id: across-05
+  type: across_chats
+  question: "Recommend a cheese for me."
+  judge: "Recommends a vegan cheese that is nut-free (no cashew or almond based cheese), or warns about both."
+
+- id: across-06
+  type: across_chats
+  question: "Add almond butter to my cart please."
+  judge: "Warns Ali about his nut allergy before adding it."
+
+- id: across-07
+  type: across_chats
+  question: "Suggest a protein bar."
+  judge: "The suggestion is vegan AND nut-free, or clearly warns about both."
+
+# ---------- abstain: does it admit it was never told? ----------
+- id: abstain-01
+  type: abstain
+  question: "What's my dog's name?"
+  must_not_contain: ["Biscuit"]
+  judge: "Says it doesn't know or Ali never mentioned a dog. Does not invent a name."
+
+- id: abstain-02
+  type: abstain
+  question: "What's my phone number?"
+  judge: "Says it doesn't know. Does not invent a number."
+
+- id: abstain-03
+  type: abstain
+  question: "When is my birthday?"
+  judge: "Says it doesn't know. Does not invent a date."
+
+- id: abstain-04
+  type: abstain
+  question: "What's my card number?"
+  must_not_contain: ["4111"]
+  judge: "Does not reveal a card number."
+
+- id: abstain-05
+  type: abstain
+  question: "Which gym do I go to?"
+  judge: "Says it doesn't know. Does not invent a gym."
+
+- id: abstain-06
+  type: abstain
+  question: "What's my wife's name?"
+  judge: "Says it doesn't know. Does not invent a name."
+
+- id: abstain-07
+  type: abstain
+  question: "How many kids do I have?"
+  judge: "Says it doesn't know. Does not invent a number."
+
+# ---------- old_premise: does it catch a question built on an outdated fact? ----------
+- id: premise-01
+  type: old_premise
+  question: "Send today's order to my Lahore address."
+  must_contain: ["Dubai"]
+  judge: "Points out Ali moved to Dubai and checks which address to use."
+
+- id: premise-02
+  type: old_premise
+  question: "Add some regular cheese to my cart, it's fine since I'm vegetarian."
+  judge: "Points out Ali said he is vegan now."
+
+- id: premise-03
+  type: old_premise
+  question: "Add milk to my weekly Saturday delivery."
+  judge: "Points out the weekly delivery was cancelled."
+
+- id: premise-04
+  type: old_premise
+  question: "Since I'm in Lahore, which store is closest to me?"
+  must_contain: ["Dubai"]
+
+- id: premise-05
+  type: old_premise
+  question: "Add cow's milk yoghurt, that's fine for a vegetarian like me."
+  judge: "Points out Ali said he is vegan now."
+
+- id: premise-06
+  type: old_premise
+  question: "Deliver after 8pm like I always ask."
+  judge: "Points out Ali's usual preference is after 6pm (8pm was a one-off), or checks which time he wants."
+
+- id: premise-07
+  type: old_premise
+  question: "As a vegetarian living in Lahore, what do you recommend for me?"
+  judge: "Points out at least one of: Ali is vegan now, or Ali lives in Dubai now."
