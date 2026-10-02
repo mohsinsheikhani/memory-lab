@@ -1,0 +1,451 @@
+{
+  "system": "full_history",
+  "run_id": "full_history-c5cdcf",
+  "accuracy": {
+    "recall": 1.0,
+    "update": 0.8571428571428571,
+    "time": 0.8571428571428571,
+    "across_chats": 0.5714285714285714,
+    "abstain": 0.8571428571428571,
+    "old_premise": 0.8571428571428571,
+    "overall": 0.8333333333333334
+  },
+  "avg_tokens": 906.0714285714286,
+  "p95_latency_s": 1.4952999999999999,
+  "cases": [
+    {
+      "id": "recall-01",
+      "type": "recall",
+      "question": "Do I have any food allergies?",
+      "answer": "Yes, you have a serious nut allergy.",
+      "passed": true,
+      "fails": [],
+      "tokens": 927,
+      "latency_s": 3.2
+    },
+    {
+      "id": "recall-02",
+      "type": "recall",
+      "question": "What's my cat's name?",
+      "answer": "Your cat's name is Biscuit.",
+      "passed": true,
+      "fails": [],
+      "tokens": 925,
+      "latency_s": 0.854
+    },
+    {
+      "id": "recall-03",
+      "type": "recall",
+      "question": "Which cheese did I say I love?",
+      "answer": "You mentioned that you absolutely love halloumi.",
+      "passed": true,
+      "fails": [],
+      "tokens": 929,
+      "latency_s": 0.82
+    },
+    {
+      "id": "recall-04",
+      "type": "recall",
+      "question": "What kind of milk do I prefer?",
+      "answer": "You prefer oat milk over any other milk.",
+      "passed": true,
+      "fails": [],
+      "tokens": 928,
+      "latency_s": 0.737
+    },
+    {
+      "id": "recall-05",
+      "type": "recall",
+      "question": "What time should my deliveries usually come?",
+      "answer": "Your deliveries should usually come after 6pm on weekdays.",
+      "passed": true,
+      "fails": [],
+      "tokens": 931,
+      "latency_s": 0.871
+    },
+    {
+      "id": "recall-06",
+      "type": "recall",
+      "question": "Which area of Dubai do I live in?",
+      "answer": "You live in Dubai Marina.",
+      "passed": true,
+      "fails": [],
+      "tokens": 926,
+      "latency_s": 0.723
+    },
+    {
+      "id": "recall-07",
+      "type": "recall",
+      "question": "Am I vegetarian?",
+      "answer": "Yes, you mentioned that you are vegetarian.",
+      "passed": true,
+      "fails": [],
+      "tokens": 292,
+      "latency_s": 0.737
+    },
+    {
+      "id": "update-01",
+      "type": "update",
+      "question": "Which city should today's order go to?",
+      "answer": "Today's order should go to Dubai Marina, as you moved there from Lahore.",
+      "passed": false,
+      "fails": [
+        "contains 'Lahore'"
+      ],
+      "tokens": 934,
+      "latency_s": 0.827
+    },
+    {
+      "id": "update-02",
+      "type": "update",
+      "question": "What's my diet?",
+      "answer": "You are vegan now.",
+      "passed": true,
+      "fails": [],
+      "tokens": 920,
+      "latency_s": 0.753
+    },
+    {
+      "id": "update-03",
+      "type": "update",
+      "question": "Do I still have a weekly delivery?",
+      "answer": "No, you cancelled the weekly Saturday delivery on April 27th.",
+      "passed": true,
+      "fails": [],
+      "tokens": 933,
+      "latency_s": 0.877
+    },
+    {
+      "id": "update-04",
+      "type": "update",
+      "question": "Which city do I live in?",
+      "answer": "You live in Dubai Marina.",
+      "passed": true,
+      "fails": [],
+      "tokens": 924,
+      "latency_s": 0.7
+    },
+    {
+      "id": "update-05",
+      "type": "update",
+      "question": "Can I eat halloumi?",
+      "answer": "Since you mentioned that you are now vegan, halloumi, which is a cheese made from milk, would not be suitable for your diet.",
+      "passed": true,
+      "fails": [],
+      "tokens": 947,
+      "latency_s": 0.981
+    },
+    {
+      "id": "update-06",
+      "type": "update",
+      "question": "Am I vegetarian?",
+      "answer": "No, you are now vegan.",
+      "passed": true,
+      "fails": [],
+      "tokens": 215,
+      "latency_s": 0.736
+    },
+    {
+      "id": "update-07",
+      "type": "update",
+      "question": "Which day does my weekly delivery come?",
+      "answer": "You cancelled the weekly Saturday delivery, so there is no set day for your deliveries now. You can order when you need things.",
+      "passed": true,
+      "fails": [],
+      "tokens": 945,
+      "latency_s": 1.041
+    },
+    {
+      "id": "time-01",
+      "type": "time",
+      "question": "Where did I live in January?",
+      "answer": "You lived in Lahore, in Gulberg, in January.",
+      "passed": true,
+      "fails": [],
+      "tokens": 930,
+      "latency_s": 0.747
+    },
+    {
+      "id": "time-02",
+      "type": "time",
+      "question": "What was my diet in February?",
+      "answer": "In February, you were vegetarian and mentioned a serious nut allergy. You also expressed a love for halloumi cheese.",
+      "passed": true,
+      "fails": [],
+      "tokens": 942,
+      "latency_s": 0.988
+    },
+    {
+      "id": "time-03",
+      "type": "time",
+      "question": "In which month did I move to Dubai?",
+      "answer": "You moved to Dubai in March 2026.",
+      "passed": true,
+      "fails": [],
+      "tokens": 930,
+      "latency_s": 0.973
+    },
+    {
+      "id": "time-04",
+      "type": "time",
+      "question": "Did I have a weekly delivery in March?",
+      "answer": "No, you cancelled the weekly Saturday delivery on April 27th, so you did not have a weekly delivery in March.",
+      "passed": false,
+      "fails": [
+        "missing 'yes'"
+      ],
+      "tokens": 945,
+      "latency_s": 1.201
+    },
+    {
+      "id": "time-05",
+      "type": "time",
+      "question": "In which month did I tell you about my nut allergy?",
+      "answer": "You mentioned your nut allergy in February 2026.",
+      "passed": true,
+      "fails": [],
+      "tokens": 934,
+      "latency_s": 0.81
+    },
+    {
+      "id": "time-06",
+      "type": "time",
+      "question": "In which month did I go vegan?",
+      "answer": "You went vegan in April 2026.",
+      "passed": true,
+      "fails": [],
+      "tokens": 928,
+      "latency_s": 0.766
+    },
+    {
+      "id": "time-07",
+      "type": "time",
+      "question": "Where did I live before Dubai?",
+      "answer": "You lived in Lahore, specifically in Gulberg, before moving to Dubai.",
+      "passed": true,
+      "fails": [],
+      "tokens": 933,
+      "latency_s": 0.976
+    },
+    {
+      "id": "across-01",
+      "type": "across_chats",
+      "question": "Suggest a snack for me.",
+      "answer": "Since you're vegan, how about some roasted chickpeas or a mix of fresh veggies with hummus? They're both healthy and delicious!",
+      "passed": true,
+      "fails": [],
+      "tokens": 943,
+      "latency_s": 1.118
+    },
+    {
+      "id": "across-02",
+      "type": "across_chats",
+      "question": "What should I put in my coffee?",
+      "answer": "Since you prefer oat milk, you can use that in your coffee. You might also consider adding some vegan sweeteners or spices like cinnamon for extra flavor!",
+      "passed": true,
+      "fails": [],
+      "tokens": 950,
+      "latency_s": 1.139
+    },
+    {
+      "id": "across-03",
+      "type": "across_chats",
+      "question": "Plan a main dish for my dinner party.",
+      "answer": "How about a delicious vegan stuffed bell pepper dish? You can fill the peppers with quinoa, black beans, corn, and spices for a flavorful and satisfying main course. Let me know if you need more ideas or ingredients!",
+      "passed": true,
+      "fails": [],
+      "tokens": 964,
+      "latency_s": 1.128
+    },
+    {
+      "id": "across-04",
+      "type": "across_chats",
+      "question": "Where and at what time should you deliver my order?",
+      "answer": "Your order should be delivered to your address in Dubai Marina after 8pm today.",
+      "passed": false,
+      "fails": [
+        "missing '6'"
+      ],
+      "tokens": 939,
+      "latency_s": 0.855
+    },
+    {
+      "id": "across-05",
+      "type": "across_chats",
+      "question": "Recommend a cheese for me.",
+      "answer": "Since you love halloumi, I recommend trying some grilled halloumi or a vegan cheese alternative if you're looking for a plant-based option. Let me know if you need more suggestions!",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not recommend a vegan cheese that is nut-free, nor does it warn about both. It only suggests grilled halloumi or a vegan cheese alternative without specifying if it's nut-free."
+      ],
+      "tokens": 955,
+      "latency_s": 1.115
+    },
+    {
+      "id": "across-06",
+      "type": "across_chats",
+      "question": "Add almond butter to my cart please.",
+      "answer": "I'm sorry, but I need to be cautious with recommendations due to your nut allergy. Would you like me to suggest a different spread?",
+      "passed": true,
+      "fails": [],
+      "tokens": 946,
+      "latency_s": 1.163
+    },
+    {
+      "id": "across-07",
+      "type": "across_chats",
+      "question": "Suggest a protein bar.",
+      "answer": "I'm sorry, I don't have specific information about protein bars. However, I can help you find vegan options if you'd like!",
+      "passed": false,
+      "fails": [
+        "judge: The answer does not provide a specific suggestion for a vegan and nut-free protein bar, nor does it clearly warn about both. It only offers to help find vegan options without addressing the nut-free requirement."
+      ],
+      "tokens": 941,
+      "latency_s": 1.116
+    },
+    {
+      "id": "abstain-01",
+      "type": "abstain",
+      "question": "What's my dog's name?",
+      "answer": "You haven't mentioned having a dog, only a cat named Biscuit.",
+      "passed": false,
+      "fails": [
+        "contains 'Biscuit'"
+      ],
+      "tokens": 930,
+      "latency_s": 1.516
+    },
+    {
+      "id": "abstain-02",
+      "type": "abstain",
+      "question": "What's my phone number?",
+      "answer": "I'm sorry, but I don't have your phone number on record.",
+      "passed": true,
+      "fails": [],
+      "tokens": 929,
+      "latency_s": 0.985
+    },
+    {
+      "id": "abstain-03",
+      "type": "abstain",
+      "question": "When is my birthday?",
+      "answer": "I'm sorry, but I don't have information about your birthday.",
+      "passed": true,
+      "fails": [],
+      "tokens": 928,
+      "latency_s": 0.893
+    },
+    {
+      "id": "abstain-04",
+      "type": "abstain",
+      "question": "What's my card number?",
+      "answer": "I'm sorry, but I can't access or recall sensitive information like your card number. You can update your payment details in the app settings.",
+      "passed": true,
+      "fails": [],
+      "tokens": 943,
+      "latency_s": 1.016
+    },
+    {
+      "id": "abstain-05",
+      "type": "abstain",
+      "question": "Which gym do I go to?",
+      "answer": "I'm sorry, but I don't have any information about which gym you go to.",
+      "passed": true,
+      "fails": [],
+      "tokens": 934,
+      "latency_s": 1.021
+    },
+    {
+      "id": "abstain-06",
+      "type": "abstain",
+      "question": "What's my wife's name?",
+      "answer": "I'm sorry, but I don't have any information about your wife's name.",
+      "passed": true,
+      "fails": [],
+      "tokens": 930,
+      "latency_s": 0.92
+    },
+    {
+      "id": "abstain-07",
+      "type": "abstain",
+      "question": "How many kids do I have?",
+      "answer": "I don't have any information about whether you have kids or not.",
+      "passed": true,
+      "fails": [],
+      "tokens": 931,
+      "latency_s": 0.954
+    },
+    {
+      "id": "premise-01",
+      "type": "old_premise",
+      "question": "Send today's order to my Lahore address.",
+      "answer": "I have your current address as Dubai Marina. If you want to send today's order to your Lahore address, please confirm if you want to update your delivery address.",
+      "passed": true,
+      "fails": [],
+      "tokens": 951,
+      "latency_s": 1.21
+    },
+    {
+      "id": "premise-02",
+      "type": "old_premise",
+      "question": "Add some regular cheese to my cart, it's fine since I'm vegetarian.",
+      "answer": "I noted that you're now vegan, so I won't add regular cheese to your cart. If you want vegan cheese instead, please let me know!",
+      "passed": true,
+      "fails": [],
+      "tokens": 954,
+      "latency_s": 1.222
+    },
+    {
+      "id": "premise-03",
+      "type": "old_premise",
+      "question": "Add milk to my weekly Saturday delivery.",
+      "answer": "You mentioned you prefer oat milk. Would you like me to add oat milk to your order? Also, I don't have information about your current weekly Saturday delivery, as you canceled it previously.",
+      "passed": true,
+      "fails": [],
+      "tokens": 957,
+      "latency_s": 1.229
+    },
+    {
+      "id": "premise-04",
+      "type": "old_premise",
+      "question": "Since I'm in Lahore, which store is closest to me?",
+      "answer": "You mentioned that you moved to Dubai Marina, so I don't have information about stores in Lahore anymore. If you need help with stores in Dubai, please let me know!",
+      "passed": true,
+      "fails": [],
+      "tokens": 957,
+      "latency_s": 1.09
+    },
+    {
+      "id": "premise-05",
+      "type": "old_premise",
+      "question": "Add cow's milk yoghurt, that's fine for a vegetarian like me.",
+      "answer": "You've mentioned that you're now vegan, so I won't recommend cow's milk yogurt. Would you like a suggestion for a vegan yogurt instead?",
+      "passed": true,
+      "fails": [],
+      "tokens": 952,
+      "latency_s": 0.962
+    },
+    {
+      "id": "premise-06",
+      "type": "old_premise",
+      "question": "Deliver after 8pm like I always ask.",
+      "answer": "Your request for delivery after 8pm is noted. I'll ensure your order is delivered accordingly.",
+      "passed": false,
+      "fails": [
+        "judge: The response does not address Ali's usual preference for delivery after 6pm or check which time he wants. It simply confirms the 8pm delivery without verifying if this is a one-off request or his usual preference."
+      ],
+      "tokens": 940,
+      "latency_s": 0.987
+    },
+    {
+      "id": "premise-07",
+      "type": "old_premise",
+      "question": "As a vegetarian living in Lahore, what do you recommend for me?",
+      "answer": "Since you've mentioned that you're now vegan, I recommend trying some plant-based proteins like lentils, chickpeas, and tofu. You might also enjoy a variety of fresh vegetables and vegan cheeses.",
+      "passed": true,
+      "fails": [],
+      "tokens": 963,
+      "latency_s": 1.378
+    }
+  ]
+}
