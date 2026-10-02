@@ -1,0 +1,100 @@
+# Ali's chats with the FreshCart support agent, Jan to Jun 2026.
+# Real facts mixed with small talk and one-off requests, so search has noise to get through.
+
+- id: jan-01
+  date: 2026-01-04
+  messages:
+    - {role: user, text: "Hi there! New customer here."}
+    - {role: assistant, text: "Welcome to FreshCart! How can I help?"}
+    - {role: user, text: "Just so you know, I'm vegetarian. And I live in Lahore, in Gulberg."}
+    - {role: assistant, text: "Got it, I'll keep that in mind."}
+
+- id: jan-02
+  date: 2026-01-11
+  messages:
+    - {role: user, text: "I get home from work around 6pm on weekdays, so please always deliver after 6pm."}
+    - {role: assistant, text: "Noted, deliveries after 6pm."}
+    - {role: user, text: "Thanks!"}
+
+- id: jan-03
+  date: 2026-01-22
+  messages:
+    - {role: user, text: "Where is my order #4521?"}
+    - {role: assistant, text: "It's out for delivery and should reach you within the hour."}
+    - {role: user, text: "ok cool, thanks"}
+
+- id: feb-01
+  date: 2026-02-03
+  messages:
+    - {role: user, text: "Important: I have a serious nut allergy. Please be careful with recommendations."}
+    - {role: assistant, text: "Thank you for telling me. I'll avoid anything with nuts."}
+
+- id: feb-02
+  date: 2026-02-14
+  messages:
+    - {role: user, text: "Can you recommend a cheese? I absolutely love halloumi by the way."}
+    - {role: assistant, text: "Halloumi is great grilled. We have a few brands in stock."}
+
+- id: feb-03
+  date: 2026-02-25
+  messages:
+    - {role: user, text: "The app crashed when I tried to pay, so annoying today."}
+    - {role: assistant, text: "Sorry about that! Please try again, it should be fixed now."}
+    - {role: user, text: "Fine. Also I signed up for the weekly Saturday delivery."}
+    - {role: assistant, text: "Great, your weekly Saturday delivery is set."}
+
+- id: mar-01
+  date: 2026-03-17
+  messages:
+    - {role: user, text: "Hey, I moved from Lahore to Dubai last week. New address is in Dubai Marina."}
+    - {role: assistant, text: "Thanks, I've noted your move to Dubai Marina."}
+
+- id: mar-02
+  date: 2026-03-28
+  messages:
+    - {role: user, text: "Weather in Dubai is getting hot already lol."}
+    - {role: assistant, text: "Stay cool! Anything I can help with?"}
+    - {role: user, text: "My brother Omar is visiting next week, he loves spicy food."}
+    - {role: assistant, text: "We have a great selection of hot sauces."}
+
+- id: apr-01
+  date: 2026-04-06
+  messages:
+    - {role: user, text: "Can you update my payment? My card is 4111 1111 1111 1111."}
+    - {role: assistant, text: "Please don't share card numbers in chat. You can update payment in the app settings."}
+
+- id: apr-02
+  date: 2026-04-15
+  messages:
+    - {role: user, text: "Actually I'm vegan now, not just vegetarian."}
+    - {role: assistant, text: "Thanks for the update, I'll suggest vegan options from now on."}
+
+- id: apr-03
+  date: 2026-04-27
+  messages:
+    - {role: user, text: "I cancelled the weekly Saturday delivery, I'll order when I need things."}
+    - {role: assistant, text: "Done, the weekly delivery is cancelled."}
+
+- id: may-01
+  date: 2026-05-08
+  messages:
+    - {role: user, text: "I have a cat named Biscuit. Do you sell cat food?"}
+    - {role: assistant, text: "Yes! We have dry and wet cat food in the pet aisle."}
+
+- id: may-02
+  date: 2026-05-19
+  messages:
+    - {role: user, text: "Please deliver after 8pm today, I'm stuck at work."}
+    - {role: assistant, text: "No problem, today's order will come after 8pm."}
+
+- id: may-03
+  date: 2026-05-30
+  messages:
+    - {role: user, text: "I prefer oat milk over any other milk."}
+    - {role: assistant, text: "Noted, oat milk it is."}
+
+- id: jun-01
+  date: 2026-06-10
+  messages:
+    - {role: user, text: "I'm hosting a dinner for 6 people this Friday, need to stock up."}
+    - {role: assistant, text: "Happy to help you plan the shopping list!"}
