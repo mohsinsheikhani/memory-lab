@@ -5,7 +5,7 @@ import litellm
 import psycopg
 from pydantic import BaseModel
 
-from db import embed, save_fact
+from db import embed, save_fact, scoped
 from extractor import MODEL, CandidateFact, extract_facts
 from gate import gate, redact
 
@@ -28,22 +28,22 @@ target_id must be a number from the list, or null for ADD and IGNORE.
 """
 
 
-def find_related(conn: psycopg.Connection, fact: CandidateFact, vec: list[float],
-                 tenant_id: str, user_id: str, k: int = 5) -> list[tuple]:
+def find_related(conn: psycopg.Connection, fact: CandidateFact, vec: list[float], k: int = 5) -> list[tuple]:
     """Current facts that might clash: same subject + predicate, or close in meaning."""
-    return conn.execute(
-        """
-        (select id, text from memories
-         where tenant_id = %s and user_id = %s and valid_to is null
-           and subject = %s and predicate = %s)
-        union
-        (select id, text from memories
-         where tenant_id = %s and user_id = %s and valid_to is null
-         order by embedding <=> %s::vector
-         limit %s)
-        """,
-        (tenant_id, user_id, fact.subject, fact.predicate, tenant_id, user_id, vec, k),
-    ).fetchall()
+    with scoped(conn) as (tenant_id, user_id):
+        return conn.execute(
+            """
+            (select id, text from memories
+             where tenant_id = %s and user_id = %s and valid_to is null
+               and subject = %s and predicate = %s)
+            union
+            (select id, text from memories
+             where tenant_id = %s and user_id = %s and valid_to is null
+             order by embedding <=> %s::vector
+             limit %s)
+            """,
+            (tenant_id, user_id, fact.subject, fact.predicate, tenant_id, user_id, vec, k),
+        ).fetchall()
 
 
 def decide(fact: CandidateFact, related: list[tuple]) -> Decision:
@@ -61,7 +61,7 @@ def decide(fact: CandidateFact, related: list[tuple]) -> Decision:
 
 
 def apply(conn: psycopg.Connection, decision: Decision, fact: CandidateFact, vec: list[float],
-          related: list[tuple], tenant_id: str, user_id: str, turn_date: date, derived_from: str) -> str:
+          related: list[tuple], turn_date: date, derived_from: str) -> str:
     action = decision.action
 
     # Our code checks the LLM's answer before acting on it.
@@ -76,30 +76,34 @@ def apply(conn: psycopg.Connection, decision: Decision, fact: CandidateFact, vec
         return "IGNORE"
 
     if action == "DELETE":
-        conn.execute("update memories set valid_to = %s where id = %s", (turn_date, target[0]))
+        with scoped(conn) as (tenant_id, user_id):
+            conn.execute("update memories set valid_to = %s where id = %s and tenant_id = %s and user_id = %s",
+                         (turn_date, target[0], tenant_id, user_id))
         return f"DELETE  '{target[1]}'"
 
-    new_id = save_fact(conn, fact, tenant_id, user_id, "user_said", turn_date, derived_from, embedding=vec)
+    new_id = save_fact(conn, fact, "user_said", turn_date, derived_from, embedding=vec)
     if action == "ADD":
         return "ADD"
 
-    conn.execute("update memories set valid_to = %s, replaced_by = %s where id = %s", (turn_date, new_id, target[0]))
+    with scoped(conn) as (tenant_id, user_id):
+        conn.execute("update memories set valid_to = %s, replaced_by = %s where id = %s and tenant_id = %s and user_id = %s",
+                     (turn_date, new_id, target[0], tenant_id, user_id))
     return f"UPDATE  '{target[1]}' ->"
 
 
-def remember(conn: psycopg.Connection, turn: str, user_name: str, tenant_id: str,
-             user_id: str, turn_date: date, derived_from: str) -> None:
+def remember(conn: psycopg.Connection, turn: str, user_name: str, turn_date: date, derived_from: str) -> None:
     """The full write step: redact -> extract -> gate -> compare -> save."""
     facts = gate(extract_facts(redact(turn), user_name, turn_date), user_name)
     for fact in facts:
         vec = embed(fact.text)
-        related = find_related(conn, fact, vec, tenant_id, user_id)
+        related = find_related(conn, fact, vec)
         decision = decide(fact, related)
-        result = apply(conn, decision, fact, vec, related, tenant_id, user_id, turn_date, derived_from)
+        result = apply(conn, decision, fact, vec, related, turn_date, derived_from)
         print(f"  {result} {fact.text}   ({decision.reason})")
 
 
 if __name__ == "__main__":
+    from auth import login, make_token
     from db import connect, init_schema
 
     turns = [
@@ -112,20 +116,24 @@ if __name__ == "__main__":
         (date(2026, 4, 20), "apr-02", "I cancelled my weekly delivery."),
     ]
 
-    with connect() as conn:
+    with connect() as conn, login(make_token("freshcart", "ali-demo")):
         init_schema(conn)
-        conn.execute("delete from memories where tenant_id = 'freshcart' and user_id = 'ali-demo'")
+        with scoped(conn) as (tenant_id, user_id):
+            conn.execute("delete from memories where tenant_id = %s and user_id = %s", (tenant_id, user_id))
         for turn_date, conv_id, turn in turns:
             print(f"\n[{turn_date}] {turn}")
-            remember(conn, turn, "Ali", "freshcart", "ali-demo", turn_date, conv_id)
+            remember(conn, turn, "Ali", turn_date, conv_id)
 
-        print("\nFinal memory (current facts):")
-        for (text,) in conn.execute(
-            "select text from memories where user_id = 'ali-demo' and valid_to is null order by created_at"
-        ):
-            print("  ", text)
-        print("\nHistory (replaced or deleted):")
-        for text, valid_to in conn.execute(
-            "select text, valid_to from memories where user_id = 'ali-demo' and valid_to is not null order by created_at"
-        ):
-            print(f"   {text}  (until {valid_to})")
+        with scoped(conn) as (tenant_id, user_id):
+            print("\nFinal memory (current facts):")
+            for (text,) in conn.execute(
+                "select text from memories where tenant_id = %s and user_id = %s and valid_to is null order by created_at",
+                (tenant_id, user_id),
+            ):
+                print("  ", text)
+            print("\nHistory (replaced or deleted):")
+            for text, valid_to in conn.execute(
+                "select text, valid_to from memories where tenant_id = %s and user_id = %s and valid_to is not null order by created_at",
+                (tenant_id, user_id),
+            ):
+                print(f"   {text}  (until {valid_to})")
