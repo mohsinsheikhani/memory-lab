@@ -22,6 +22,20 @@ PREDICATES = {
     "dislikes_food": "many",
 }
 
+# How fast each tag goes stale. A city changes over years, a delivery time over weeks.
+SPEED = {
+    "lives_in": "slow",
+    "diet": "slow",
+    "household_size": "slow",
+    "allergy": "never",
+    "delivery_plan": "medium",
+    "delivery_time": "medium",
+    "likes_food": "medium",
+    "dislikes_food": "medium",
+    "other": "medium",
+}
+STALE_AFTER_DAYS = {"never": None, "slow": 365, "medium": 60}
+
 
 class CandidateFact(BaseModel):
     subject: str
