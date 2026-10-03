@@ -27,6 +27,8 @@ Rules:
 - Turn relative dates ("last week", "yesterday") into real dates using today's date.
 - One fact per item. Predicates are short snake_case.
 - The fact must keep the meaning of the message. Never drop words that change it, like not, no longer, stopped, cancelled, paused, resumed, anymore.
+- Only save what the user says outright. Never guess a fact from a passing remark.
+- Only save things that will still be true next month. Skip weather, moods and passing comments.
 - value is the current state, in a few words.
 - text is one short sentence that makes sense on its own, like "Ali lives in Dubai (since 2026-03-10)."
 - Small talk, greetings, thanks and questions with no facts give an empty list.
