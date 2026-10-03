@@ -20,6 +20,7 @@ from dotenv import load_dotenv
 from langfuse import Langfuse, propagate_attributes
 from pydantic import BaseModel
 
+from auth import login, make_token
 from compare import remember
 from db import connect, embed, init_schema, search
 from extractor import MODEL
@@ -109,7 +110,8 @@ def ingest(conn: psycopg.Connection, system: str, history: dict, cases: list[dic
                         (TENANT, user_id, conv["id"], conv["date"], msg["role"], line, embed(line)),
                     )
                 elif msg["role"] == "user":
-                    remember(conn, msg["text"], USER_NAME, TENANT, user_id, conv["date"], conv["id"])
+                    with login(make_token(TENANT, user_id)):
+                        remember(conn, msg["text"], USER_NAME, conv["date"], conv["id"])
 
 
 # ---------- the four systems: build the context for one question ----------
@@ -132,7 +134,8 @@ def build_context(conn: psycopg.Connection, system: str, case: dict, history: di
         ).fetchall()
         return "Relevant past messages:\n" + "\n".join(r[0] for r in rows)
 
-    facts = search(conn, case["question"], TENANT, user_id, k=TOP_K)
+    with login(make_token(TENANT, user_id)):
+        facts = search(conn, case["question"], k=TOP_K)
     return "What you know about the customer:\n" + "\n".join(f"- {text}" for text, _ in facts)
 
 
