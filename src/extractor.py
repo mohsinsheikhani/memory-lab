@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Literal
 
 import litellm
 from dotenv import load_dotenv
@@ -8,10 +9,23 @@ load_dotenv()
 
 MODEL = "gpt-4o-mini"
 
+# The tags the LLM must pick from. "one": a new value closes the old one (one city at a time).
+# "many": values pile up (he can like shawarma and mangoes). Anything else is "other".
+PREDICATES = {
+    "lives_in": "one",
+    "diet": "one",
+    "household_size": "one",
+    "delivery_plan": "one",
+    "delivery_time": "one",
+    "allergy": "many",
+    "likes_food": "many",
+    "dislikes_food": "many",
+}
+
 
 class CandidateFact(BaseModel):
     subject: str
-    predicate: str
+    predicate: Literal[(*PREDICATES, "other")]
     value: str
     text: str
 
@@ -25,7 +39,8 @@ PROMPT = """You pull lasting facts about the user out of one chat message.
 Rules:
 - Use the user's name as the subject, never "I" or "the user".
 - Turn relative dates ("last week", "yesterday") into real dates using today's date.
-- One fact per item. Predicates are short snake_case.
+- One fact per item. predicate must be one of the listed tags. Use "other" if none fit.
+  A move is lives_in. Vegetarian or vegan is diet. Starting, pausing or cancelling a delivery is delivery_plan.
 - The fact must keep the meaning of the message. Never drop words that change it, like not, no longer, stopped, cancelled, paused, resumed, anymore.
 - Only save what the user says outright. Never guess a fact from a passing remark.
 - Only save things that will still be true next month. Skip weather, moods and passing comments.
