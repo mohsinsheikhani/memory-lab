@@ -5,8 +5,8 @@ import litellm
 import psycopg
 from pydantic import BaseModel
 
-from db import embed, save_fact, scoped
-from extractor import MODEL, CandidateFact, extract_facts
+from db import embed, facts_as_of, replace, save_fact, scoped
+from extractor import MODEL, PREDICATES, CandidateFact, extract_facts
 from gate import gate, redact
 
 
@@ -85,10 +85,34 @@ def apply(conn: psycopg.Connection, decision: Decision, fact: CandidateFact, vec
     if action == "ADD":
         return "ADD"
 
-    with scoped(conn) as (tenant_id, user_id):
-        conn.execute("update memories set valid_to = %s, replaced_by = %s where id = %s and tenant_id = %s and user_id = %s",
-                     (turn_date, new_id, target[0], tenant_id, user_id))
+    replace(conn, target[0], new_id, turn_date)
     return f"UPDATE  '{target[1]}' ->"
+
+
+def by_rule(conn: psycopg.Connection, fact: CandidateFact, vec: list[float], turn_date: date, derived_from: str) -> str | None:
+    """Known tags need no LLM. "one": the new value closes the old one. "many": keep them all."""
+    kind = PREDICATES.get(fact.predicate)
+    if kind is None:
+        return None
+
+    with scoped(conn) as (tenant_id, user_id):
+        current = conn.execute(
+            """
+            select id, text, value from memories
+            where tenant_id = %s and user_id = %s and valid_to is null and subject = %s and predicate = %s
+            """,
+            (tenant_id, user_id, fact.subject, fact.predicate),
+        ).fetchall()
+
+    if any(value.strip().lower() == fact.value.strip().lower() for _, _, value in current):
+        return "IGNORE"
+
+    new_id = save_fact(conn, fact, "user_said", turn_date, derived_from, embedding=vec)
+    if kind == "one" and current:
+        for old_id, old_text, _ in current:
+            replace(conn, old_id, new_id, turn_date)
+        return f"REPLACE  '{old_text}' ->"
+    return "ADD"
 
 
 def remember(conn: psycopg.Connection, turn: str, user_name: str, turn_date: date, derived_from: str) -> None:
@@ -96,6 +120,10 @@ def remember(conn: psycopg.Connection, turn: str, user_name: str, turn_date: dat
     facts = gate(extract_facts(redact(turn), user_name, turn_date), user_name)
     for fact in facts:
         vec = embed(fact.text)
+        result = by_rule(conn, fact, vec, turn_date, derived_from)
+        if result:
+            print(f"  {result} {fact.text}   (rule: {fact.predicate} is {PREDICATES[fact.predicate]})")
+            continue
         related = find_related(conn, fact, vec)
         decision = decide(fact, related)
         result = apply(conn, decision, fact, vec, related, turn_date, derived_from)
@@ -112,6 +140,8 @@ if __name__ == "__main__":
         (date(2026, 1, 20), "jan-03", "Just a reminder, I'm vegetarian."),
         (date(2026, 2, 2), "feb-01", "I have a nut allergy. Also I signed up for weekly delivery."),
         (date(2026, 3, 17), "mar-01", "I moved from Lahore to Dubai last week."),
+        (date(2026, 3, 25), "mar-02", "I love shawarma."),
+        (date(2026, 3, 28), "mar-03", "Mangoes are my favourite too."),
         (date(2026, 4, 3), "apr-01", "Actually I'm vegan now, not just vegetarian."),
         (date(2026, 4, 20), "apr-02", "I cancelled my weekly delivery."),
     ]
@@ -137,3 +167,8 @@ if __name__ == "__main__":
                 (tenant_id, user_id),
             ):
                 print(f"   {text}  (until {valid_to})")
+
+        for day in (date(2026, 1, 15), date(2026, 3, 20), date(2026, 4, 25)):
+            print(f"\nTrue on {day}:")
+            for text in facts_as_of(conn, day):
+                print("  ", text)
