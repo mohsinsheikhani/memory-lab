@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from pgvector.psycopg import register_vector
 
 from auth import current_scope
-from extractor import CandidateFact
+from extractor import SPEED, STALE_AFTER_DAYS, CandidateFact
 
 load_dotenv()
 
@@ -36,6 +36,9 @@ create table if not exists memories (
 
 -- When a fact is replaced, the old row points to the new one.
 alter table memories add column if not exists replaced_by uuid references memories(id);
+
+-- The last day the user told us this. Saying it again moves it forward.
+alter table memories add column if not exists last_confirmed date;
 
 create index if not exists memories_owner_idx on memories (tenant_id, user_id, subject, predicate);
 create index if not exists memories_embedding_idx on memories using hnsw (embedding vector_cosine_ops);
@@ -106,12 +109,12 @@ def save_fact(
     with scoped(conn) as (tenant_id, user_id):
         row = conn.execute(
             """
-            insert into memories (tenant_id, user_id, subject, predicate, value, text, source, valid_from, derived_from, embedding)
-            values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s::vector)
+            insert into memories (tenant_id, user_id, subject, predicate, value, text, source, valid_from, last_confirmed, derived_from, embedding)
+            values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s::vector)
             returning id
             """,
             (tenant_id, user_id, fact.subject, fact.predicate, fact.value, fact.text,
-             source, valid_from, derived_from, vec),
+             source, valid_from, valid_from, derived_from, vec),
         ).fetchone()
     return str(row[0])
 
@@ -126,6 +129,23 @@ def replace(conn: psycopg.Connection, old_id: str, new_id: str, on: date) -> Non
             """,
             (on, new_id, old_id, tenant_id, user_id),
         )
+
+
+def confirm(conn: psycopg.Connection, fact_id: str, on: date) -> None:
+    """The user said it again, so it's fresh again."""
+    with scoped(conn) as (tenant_id, user_id):
+        conn.execute(
+            "update memories set last_confirmed = %s where id = %s and tenant_id = %s and user_id = %s",
+            (on, fact_id, tenant_id, user_id),
+        )
+
+
+def with_age(text: str, predicate: str, last_confirmed: date | None, today: date) -> str:
+    """Tag a fact that's old for its type, so the agent knows to double check it."""
+    days = STALE_AFTER_DAYS[SPEED.get(predicate, "medium")]
+    if days is None or last_confirmed is None or (today - last_confirmed).days < days:
+        return text
+    return f"{text} (last confirmed on {last_confirmed})"
 
 
 def facts_as_of(conn: psycopg.Connection, day: date) -> list[str]:
@@ -143,13 +163,14 @@ def facts_as_of(conn: psycopg.Connection, day: date) -> list[str]:
         )]
 
 
-def search(conn: psycopg.Connection, query: str, k: int = 5) -> list[tuple[str, float]]:
-    """Current facts for the logged-in user, closest first."""
+def search(conn: psycopg.Connection, query: str, k: int = 5, today: date | None = None) -> list[tuple[str, float]]:
+    """Current facts for the logged-in user, closest first. Old ones get a "last confirmed" tag."""
     vec = embed(query)
+    today = today or date.today()
     with scoped(conn) as (tenant_id, user_id):
-        return conn.execute(
+        rows = conn.execute(
             """
-            select text, 1 - (embedding <=> %s::vector) as similarity
+            select text, predicate, last_confirmed, 1 - (embedding <=> %s::vector) as similarity
             from memories
             where tenant_id = %s and user_id = %s and valid_to is null
             order by embedding <=> %s::vector
@@ -157,6 +178,7 @@ def search(conn: psycopg.Connection, query: str, k: int = 5) -> list[tuple[str, 
             """,
             (vec, tenant_id, user_id, vec, k),
         ).fetchall()
+    return [(with_age(text, predicate, confirmed, today), sim) for text, predicate, confirmed, sim in rows]
 
 
 if __name__ == "__main__":
