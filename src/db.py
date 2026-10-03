@@ -116,6 +116,33 @@ def save_fact(
     return str(row[0])
 
 
+def replace(conn: psycopg.Connection, old_id: str, new_id: str, on: date) -> None:
+    """Close the old fact instead of deleting it. It stays in history and points to the new one."""
+    with scoped(conn) as (tenant_id, user_id):
+        conn.execute(
+            """
+            update memories set valid_to = %s, replaced_by = %s
+            where id = %s and tenant_id = %s and user_id = %s and valid_to is null
+            """,
+            (on, new_id, old_id, tenant_id, user_id),
+        )
+
+
+def facts_as_of(conn: psycopg.Connection, day: date) -> list[str]:
+    """What was true for the logged-in user on that day."""
+    with scoped(conn) as (tenant_id, user_id):
+        return [r[0] for r in conn.execute(
+            """
+            select text from memories
+            where tenant_id = %s and user_id = %s
+              and (valid_from is null or valid_from <= %s)
+              and (valid_to is null or valid_to > %s)
+            order by valid_from
+            """,
+            (tenant_id, user_id, day, day),
+        )]
+
+
 def search(conn: psycopg.Connection, query: str, k: int = 5) -> list[tuple[str, float]]:
     """Current facts for the logged-in user, closest first."""
     vec = embed(query)
