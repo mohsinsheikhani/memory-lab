@@ -5,7 +5,7 @@ import litellm
 import psycopg
 from pydantic import BaseModel
 
-from db import embed, facts_as_of, replace, save_fact, scoped
+from db import confirm, embed, facts_as_of, replace, save_fact, scoped, search
 from extractor import MODEL, PREDICATES, CandidateFact, extract_facts
 from gate import gate, redact
 
@@ -104,8 +104,10 @@ def by_rule(conn: psycopg.Connection, fact: CandidateFact, vec: list[float], tur
             (tenant_id, user_id, fact.subject, fact.predicate),
         ).fetchall()
 
-    if any(value.strip().lower() == fact.value.strip().lower() for _, _, value in current):
-        return "IGNORE"
+    for old_id, _, value in current:
+        if value.strip().lower() == fact.value.strip().lower():
+            confirm(conn, old_id, turn_date)
+            return "CONFIRM"
 
     new_id = save_fact(conn, fact, "user_said", turn_date, derived_from, embedding=vec)
     if kind == "one" and current:
@@ -171,4 +173,9 @@ if __name__ == "__main__":
         for day in (date(2026, 1, 15), date(2026, 3, 20), date(2026, 4, 25)):
             print(f"\nTrue on {day}:")
             for text in facts_as_of(conn, day):
+                print("  ", text)
+
+        for today in (date(2026, 4, 25), date(2027, 6, 1)):
+            print(f"\nRetrieved on {today}:")
+            for text, _ in search(conn, "where do I live, what do I eat, when do you deliver", k=10, today=today):
                 print("  ", text)
