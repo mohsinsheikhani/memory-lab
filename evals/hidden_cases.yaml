@@ -1,0 +1,126 @@
+# Hidden replacements: the new message is about a different topic, but it can make an old fact wrong.
+# expect: close = the old fact should be closed. keep = the old fact still stands.
+
+# ---------- should close ----------
+
+- id: hid-01
+  old: {date: 2026-01-10, says: "Add Whiskas cat food to every order."}
+  new: {date: 2026-05-02, says: "My cat passed away last week."}
+  expect: close
+  why: No cat, so no cat food.
+
+- id: hid-02
+  old: {date: 2026-01-15, says: "I'm pregnant, so no raw fish or soft cheese please."}
+  new: {date: 2026-07-20, says: "The baby was born last month!"}
+  expect: close
+  why: The food rule was only there because of the pregnancy.
+
+- id: hid-03
+  old: {date: 2026-01-12, says: "On weekdays, always deliver to my office at Acme."}
+  new: {date: 2026-04-08, says: "I quit Acme, I work from home now."}
+  expect: close
+  why: He doesn't go to the Acme office anymore.
+
+- id: hid-04
+  old: {date: 2026-01-20, says: "Add baby formula to my weekly box."}
+  new: {date: 2026-09-01, says: "My son is 3 now, he eats whatever we eat."}
+  expect: close
+  why: A 3 year old doesn't need formula.
+
+- id: hid-05
+  old: {date: 2026-02-01, says: "Add two protein shakes to every order, I'm training for the Dubai marathon."}
+  new: {date: 2026-03-05, says: "Ran the marathon last Sunday, I'm done with training for a while."}
+  expect: close
+  why: The shakes were for the training, and the training is over.
+
+- id: hid-06
+  old: {date: 2026-01-08, says: "My roommate is vegan, so no meat in our shared orders."}
+  new: {date: 2026-04-15, says: "My roommate moved out."}
+  expect: close
+  why: The no-meat rule was for the roommate, who is gone.
+
+- id: hid-07
+  old: {date: 2026-01-05, says: "Always leave my orders with Karim, the doorman."}
+  new: {date: 2026-06-10, says: "We moved into a house, so no doorman anymore."}
+  expect: close
+  why: There's no Karim at the new place.
+
+- id: hid-08
+  old: {date: 2026-02-10, says: "My dad is staying with us, please add sugar-free snacks for him."}
+  new: {date: 2026-05-20, says: "Dad went back to Lahore yesterday."}
+  expect: close
+  why: The snacks were for the dad, who left.
+
+- id: hid-09
+  old: {date: 2026-01-18, says: "I have braces, so nothing hard or sticky."}
+  new: {date: 2026-08-02, says: "Got my braces off today!"}
+  expect: close
+  why: The food rule was only because of the braces.
+
+- id: hid-10
+  old: {date: 2026-01-25, says: "I work night shifts, so only deliver after 2pm."}
+  new: {date: 2026-04-30, says: "I switched to the day shift at the hospital."}
+  expect: close
+  why: The delivery time was set around night shifts.
+
+- id: hid-11
+  old: {date: 2026-02-03, says: "Store pickup is fine for me, I'll drive over."}
+  new: {date: 2026-06-18, says: "I sold my car last week."}
+  expect: close
+  why: He can't drive over without a car.
+
+- id: hid-12
+  old: {date: 2026-01-14, says: "No dairy in my orders, my daughter has a milk allergy."}
+  new: {date: 2026-09-10, says: "Good news, the doctor says my daughter outgrew her milk allergy."}
+  expect: close
+  why: The no-dairy rule was for the allergy, which is gone.
+
+- id: hid-13
+  old: {date: 2026-01-22, says: "Add Nespresso pods to every order."}
+  new: {date: 2026-05-12, says: "My Nespresso machine broke, I use a French press now."}
+  expect: close
+  why: Pods don't work in a French press.
+
+- id: hid-14
+  old: {date: 2026-02-06, says: "Every Friday I order snacks for my team at the office."}
+  new: {date: 2026-06-01, says: "Our company went fully remote this month."}
+  expect: close
+  why: No office, so no team snacks there.
+
+# ---------- should keep ----------
+
+- id: hid-15
+  old: {date: 2026-01-12, says: "On weekdays, always deliver to my office at Acme."}
+  new: {date: 2026-04-08, says: "I'm working from home today."}
+  expect: keep
+  why: One day at home doesn't change the weekday rule.
+
+- id: hid-16
+  old: {date: 2026-03-17, says: "I moved from Lahore to Dubai last week."}
+  new: {date: 2026-06-20, says: "I'm visiting Lahore for two weeks."}
+  expect: keep
+  why: A trip, not a move.
+
+- id: hid-17
+  old: {date: 2026-01-10, says: "Add Whiskas cat food to every order."}
+  new: {date: 2026-05-02, says: "My cat is at the vet for a few days."}
+  expect: keep
+  why: The cat is coming back.
+
+- id: hid-18
+  old: {date: 2026-01-18, says: "I have braces, so nothing hard or sticky."}
+  new: {date: 2026-03-01, says: "My braces got tightened today, my teeth hurt."}
+  expect: keep
+  why: Still has braces.
+
+- id: hid-19
+  old: {date: 2026-01-25, says: "I work night shifts, so only deliver after 2pm."}
+  new: {date: 2026-04-30, says: "I'm on holiday this week."}
+  expect: keep
+  why: A week off doesn't change the shift.
+
+- id: hid-20
+  old: {date: 2026-01-08, says: "My roommate is vegan, so no meat in our shared orders."}
+  new: {date: 2026-04-15, says: "My roommate is away for the weekend."}
+  expect: keep
+  why: The roommate still lives there.
