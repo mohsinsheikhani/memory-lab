@@ -1,0 +1,160 @@
+[
+  {
+    "id": "hid-01",
+    "expect": "close",
+    "outcome": "old saved nothing",
+    "passed": false,
+    "proposals": []
+  },
+  {
+    "id": "hid-02",
+    "expect": "close",
+    "outcome": "compare closed it",
+    "passed": true,
+    "proposals": []
+  },
+  {
+    "id": "hid-03",
+    "expect": "close",
+    "outcome": "compare closed it",
+    "passed": true,
+    "proposals": []
+  },
+  {
+    "id": "hid-04",
+    "expect": "close",
+    "outcome": "checker proposed",
+    "passed": true,
+    "proposals": [
+      {
+        "old": "Ali is adding baby formula to their weekly box.",
+        "new": "Ali has a household size of 3.",
+        "reason": "With a household size of 3, Ali may no longer need to add baby formula if there are no infants in the household."
+      }
+    ]
+  },
+  {
+    "id": "hid-05",
+    "expect": "close",
+    "outcome": "compare closed it",
+    "passed": true,
+    "proposals": []
+  },
+  {
+    "id": "hid-06",
+    "expect": "close",
+    "outcome": "compare closed it",
+    "passed": true,
+    "proposals": []
+  },
+  {
+    "id": "hid-07",
+    "expect": "close",
+    "outcome": "checker proposed",
+    "passed": true,
+    "proposals": [
+      {
+        "old": "Ali always leaves orders with Karim, the doorman.",
+        "new": "Ali lives in a house.",
+        "reason": "If Ali lives in a house, he may not have a doorman to leave orders with."
+      }
+    ]
+  },
+  {
+    "id": "hid-08",
+    "expect": "close",
+    "outcome": "kept",
+    "passed": false,
+    "proposals": []
+  },
+  {
+    "id": "hid-09",
+    "expect": "close",
+    "outcome": "kept",
+    "passed": false,
+    "proposals": []
+  },
+  {
+    "id": "hid-10",
+    "expect": "close",
+    "outcome": "kept",
+    "passed": false,
+    "proposals": []
+  },
+  {
+    "id": "hid-11",
+    "expect": "close",
+    "outcome": "old saved nothing",
+    "passed": false,
+    "proposals": []
+  },
+  {
+    "id": "hid-12",
+    "expect": "close",
+    "outcome": "checker proposed",
+    "passed": true,
+    "proposals": [
+      {
+        "old": "Ali's daughter has a milk allergy.",
+        "new": "Ali's daughter no longer has a milk allergy.",
+        "reason": "The new fact states that Ali's daughter no longer has a milk allergy, making the older fact incorrect."
+      }
+    ]
+  },
+  {
+    "id": "hid-13",
+    "expect": "close",
+    "outcome": "old saved nothing",
+    "passed": false,
+    "proposals": []
+  },
+  {
+    "id": "hid-14",
+    "expect": "close",
+    "outcome": "kept",
+    "passed": false,
+    "proposals": []
+  },
+  {
+    "id": "hid-15",
+    "expect": "keep",
+    "outcome": "kept",
+    "passed": true,
+    "proposals": []
+  },
+  {
+    "id": "hid-16",
+    "expect": "keep",
+    "outcome": "kept",
+    "passed": true,
+    "proposals": []
+  },
+  {
+    "id": "hid-17",
+    "expect": "keep",
+    "outcome": "old saved nothing",
+    "passed": false,
+    "proposals": []
+  },
+  {
+    "id": "hid-18",
+    "expect": "keep",
+    "outcome": "kept",
+    "passed": true,
+    "proposals": []
+  },
+  {
+    "id": "hid-19",
+    "expect": "keep",
+    "outcome": "kept",
+    "passed": true,
+    "proposals": []
+  },
+  {
+    "id": "hid-20",
+    "expect": "keep",
+    "outcome": "kept",
+    "passed": true,
+    "proposals": []
+  }
+]
