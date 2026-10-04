@@ -67,6 +67,24 @@ drop policy if exists owner_only on memories;
 create policy owner_only on memories to memory_app
     using (tenant_id = current_setting('app.tenant_id', true) and user_id = current_setting('app.user_id', true))
     with check (tenant_id = current_setting('app.tenant_id', true) and user_id = current_setting('app.user_id', true));
+
+-- The checker's suggestions to close an old fact. Nothing closes until one is approved.
+create table if not exists proposals (
+    id         uuid primary key default gen_random_uuid(),
+    tenant_id  text not null,
+    user_id    text not null,
+    old_id     uuid not null references memories(id) on delete cascade,
+    new_id     uuid not null references memories(id) on delete cascade,
+    reason     text not null,
+    status     text not null default 'pending',
+    created_at timestamptz not null default now()
+);
+alter table proposals enable row level security;
+grant select, insert, update, delete on proposals to memory_app;
+drop policy if exists owner_only on proposals;
+create policy owner_only on proposals to memory_app
+    using (tenant_id = current_setting('app.tenant_id', true) and user_id = current_setting('app.user_id', true))
+    with check (tenant_id = current_setting('app.tenant_id', true) and user_id = current_setting('app.user_id', true));
 """
 
 
