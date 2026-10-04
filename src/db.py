@@ -40,8 +40,13 @@ alter table memories add column if not exists replaced_by uuid references memori
 -- The last day the user told us this. Saying it again moves it forward.
 alter table memories add column if not exists last_confirmed date;
 
+-- Words of each fact, so keyword search can find exact names like "Sara" or "halloumi".
+alter table memories add column if not exists words tsvector
+    generated always as (to_tsvector('english', text)) stored;
+
 create index if not exists memories_owner_idx on memories (tenant_id, user_id, subject, predicate);
 create index if not exists memories_embedding_idx on memories using hnsw (embedding vector_cosine_ops);
+create index if not exists memories_words_idx on memories using gin (words);
 
 -- Supabase exposes public tables through its API. RLS with no policies blocks that path.
 alter table memories enable row level security;
@@ -179,6 +184,27 @@ def search(conn: psycopg.Connection, query: str, k: int = 5, today: date | None 
             (vec, tenant_id, user_id, vec, k),
         ).fetchall()
     return [(with_age(text, predicate, confirmed, today), sim) for text, predicate, confirmed, sim in rows]
+
+
+def keyword_search(conn: psycopg.Connection, query: str, k: int = 5, today: date | None = None) -> list[tuple[str, float]]:
+    """Current facts that share a word with the question. A fact with any of the words counts, more matches rank higher."""
+    today = today or date.today()
+    with scoped(conn) as (tenant_id, user_id):
+        rows = conn.execute(
+            """
+            with q as (
+                select to_tsquery('english', array_to_string(tsvector_to_array(to_tsvector('english', %s)), ' | ')) as words
+            )
+            select text, predicate, last_confirmed, ts_rank(memories.words, q.words) as rank
+            from memories, q
+            where tenant_id = %s and user_id = %s and valid_to is null
+              and memories.words @@ q.words
+            order by rank desc
+            limit %s
+            """,
+            (query, tenant_id, user_id, k),
+        ).fetchall()
+    return [(with_age(text, predicate, confirmed, today), rank) for text, predicate, confirmed, rank in rows]
 
 
 if __name__ == "__main__":
